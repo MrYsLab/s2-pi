@@ -1,0 +1,106 @@
+#!/usr/bin/env python3
+
+"""
+s2_pi.py
+
+ Copyright (c) 2016, 2017 Alan Yorinks All right reserved.
+
+ Python Banyan is free software; you can redistribute it and/or
+ modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
+ Version 3 as published by the Free Software Foundation; either
+ or (at your option) any later version.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+
+ You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
+ along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+"""
+import pigpio
+import json
+import sys
+import time
+
+import pigpio
+from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
+
+
+# This class inherits from WebSocket.
+# It receives messages from the Scratch and reports back for any digital input
+# changes.
+class S2Pi(WebSocket):
+   
+    def handleMessage(self):
+        # get command from Scratch2
+        # print(self.data)
+        payload = json.loads(self.data)
+        client_cmd = payload['command']
+        # When the user wishes to set a pin as a digital Input
+        if client_cmd == 'input':
+            print('input')
+            pin = int(payload['pin'])
+            self.pi.set_glitch_filter(pin, 20000)
+            self.pi.set_mode(pin, pigpio.INPUT)
+            self.pi.callback(pin, pigpio.EITHER_EDGE, self.input_callback)
+        # when a user wishes to set the state of a digital output pin
+        elif client_cmd == 'digital_write':
+            pin = int(payload['pin'])
+            self.pi.set_mode(pin, pigpio.OUTPUT)
+            state = payload['state']
+            if state == 'Low':
+                self.pi.write(pin, 0)
+            else:
+                self.pi.write(pin, 1)
+        # when a user wishes to set a pwm level for a digital input pin
+        elif client_cmd == 'analog_write':
+            pin = int(payload['pin'])
+            self.pi.set_mode(pin, pigpio.OUTPUT)
+            value = int(payload['value'])
+            self.pi.set_PWM_dutycycle(pin, value)
+        # when a user wishes to output a tone
+        elif client_cmd == 'tone':
+            pin = int(payload['pin'])
+            self.pi.set_mode(pin, pigpio.OUTPUT)
+
+            frequency = int(payload['frequency'])
+            frequency = int((1000 / frequency) * 1000)
+            tone = [pigpio.pulse(1 << pin, 0, frequency),
+                    pigpio.pulse(0, 1 << pin, frequency)]
+
+            self.pi.wave_add_generic(tone)
+            wid = self.pi.wave_create()
+
+            if wid >= 0:
+                self.pi.wave_send_repeat(wid)
+                time.sleep(1)
+                self.pi.wave_tx_stop()
+                self.pi.wave_delete(wid)
+        elif client_cmd == 'ready':
+            print('user requested connect')
+        else:
+            print("Unknown command received", client_cmd)
+
+    # call back from pigpio when a digital input value changed
+    # send info back up to scratch
+    def input_callback(self, pin, level, tick):
+        payload = {'report': 'digital_input_change', 'pin': str(pin), 'level': str(level)}
+        print('callback', payload)
+        msg = json.dumps(payload)
+        self.sendMessage(msg)
+
+    def handleConnected(self):
+        self.pi = pigpio.pi()
+        print(self.address, 'connected')
+
+    def handleClose(self):
+        print(self.address, 'closed')
+
+try:
+    server = SimpleWebSocketServer('', 9000, S2Pi)
+    server.serveforever()
+except KeyboardInterrupt:
+    sys.exit(0)
+
