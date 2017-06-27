@@ -50,7 +50,7 @@ class S2Pi(WebSocket):
             pin = int(payload['pin'])
             self.pi.set_mode(pin, pigpio.OUTPUT)
             state = payload['state']
-            if state == 'Low':
+            if state == '0':
                 self.pi.write(pin, 0)
             else:
                 self.pi.write(pin, 1)
