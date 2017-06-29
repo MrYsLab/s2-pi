@@ -225,8 +225,10 @@ When the connection is complete the indicator will go from yellow to green.
    <br>
    
 <div style="text-align: center;"><IMG SRC="./images/green.png" ALT="image"></div>
+   <br>   
 
-## Changing The State Of A Digital Output Pin
+
+### Changing The State Of A Digital Output Pin
 
 If you have a device, such as an LED connected to a GPIO pin, you can set its state to a "1" or "0" 
 by using the **_Set BCM Output block_**.
@@ -234,7 +236,7 @@ by using the **_Set BCM Output block_**.
 ## Changing The State Of A Digital Output Pin Using PWM
 Using the same LED device, you can set its brightness (from 0 to 255) using the **_Set BCM PWM Output_** block.
 
-## Getting Input From A Digital Input Pin
+###Getting Input From A Digital Input Pin
 
 If you have a device, such as a switch, connected to a GPIO pin, you can read the switch's current 
 state. First you must set the pin as an input using the **_Set BCM as Input_** block. This sets up pigpio
