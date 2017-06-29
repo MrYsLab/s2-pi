@@ -9,7 +9,7 @@ user = '/home/' + user[0]
 
 setup(
     name='s2-pi',
-    version='1.0',
+    version='1.1',
     packages=['s2_pi'],
     # install_requires=['simple-websocket-server'],
     # dependency_links=["pip3 install git+https://github.com/dpallot/simple-websocket-server.git"],
