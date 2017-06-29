@@ -225,9 +225,6 @@ When the connection is complete the indicator will go from yellow to green.
 <img src="./images/green.png" style="float: left; width: 30%; margin-right: 1%; margin-bottom: 0.5em;">
 <p style="clear: both;">
 
-
-
-
 ### Changing The State Of A Digital Output Pin
 
 If you have a device, such as an LED connected to a GPIO pin, you can set its state to a "1" or "0" 
