@@ -2,8 +2,8 @@
 
 <center><span style="color:#990033; font-family:Georgia; font-size:4em;">s2-pi</span></center>
 
-<center><span style="color:#990033; font-family:Georgia; font-size:3em;">*Creating Scratch 2 
-Extensions On Your Raspberry Pi*</span></center>
+<center><span style="color:#990033; font-family:Georgia; font-size:3em;">Creating Scratch 2 
+Extensions On Your Raspberry Pi</span></center>
 
 # Introduction
 
