@@ -221,9 +221,12 @@ will be yellow.
 
 When the connection is complete the indicator will go from yellow to green.
 
-<img src="./images/yellow.png" style="float: left; width: 30%; margin-right: 30%; margin-bottom: 0.5em;">
-<img src="./images/green.png" style="float: left; width: 30%; margin-right: 1%; margin-bottom: 0.5em;">
-<p style="clear: both;">
+<div style="text-align: center;"><IMG SRC="./images/yellow.png" ALT="image"></div>
+   <br>
+   
+<div style="text-align: center;"><IMG SRC="./images/green.png" ALT="image"></div>
+   <br>   
+
 
 ### Changing The State Of A Digital Output Pin
 
