@@ -28,7 +28,6 @@
     ext.cnct = function () {
         window.socket = new WebSocket("ws://127.0.0.1:9000");
         window.socket.onopen = function () {
-            // tell the server that the user requested to connect
             var msg = JSON.stringify({
                 "command": "ready"
             });
@@ -196,7 +195,7 @@
             "high_low": ["0", "1"]
 
         },
-        url: 'http://MrYsLab.github.io/rb4s'
+        url: 'http://MrYsLab.github.io/s2-pi'
     };
 
     // Register the extension

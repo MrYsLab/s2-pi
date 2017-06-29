@@ -19,11 +19,10 @@ s2_pi.py
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 """
-import pigpio
 import json
 import sys
 import time
-
+import os
 import pigpio
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
@@ -35,12 +34,11 @@ class S2Pi(WebSocket):
    
     def handleMessage(self):
         # get command from Scratch2
-        # print(self.data)
         payload = json.loads(self.data)
+        print(payload)
         client_cmd = payload['command']
         # When the user wishes to set a pin as a digital Input
         if client_cmd == 'input':
-            print('input')
             pin = int(payload['pin'])
             self.pi.set_glitch_filter(pin, 20000)
             self.pi.set_mode(pin, pigpio.INPUT)
@@ -79,7 +77,7 @@ class S2Pi(WebSocket):
                 self.pi.wave_tx_stop()
                 self.pi.wave_delete(wid)
         elif client_cmd == 'ready':
-            print('user requested connect')
+            pass
         else:
             print("Unknown command received", client_cmd)
 
@@ -98,9 +96,17 @@ class S2Pi(WebSocket):
     def handleClose(self):
         print(self.address, 'closed')
 
-try:
+def run_server():
+    print('Did you remember to start pigpiod with: "sudo pigpiod" ???')
+    os.system('scratch2&')
     server = SimpleWebSocketServer('', 9000, S2Pi)
     server.serveforever()
-except KeyboardInterrupt:
-    sys.exit(0)
+
+
+if __name__ == "__main__":
+    try:
+        run_server()
+    except KeyboardInterrupt:
+        sys.exit(0)
+
 
