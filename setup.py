@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from subprocess import call
 
-call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
+# call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
 
 user = os.listdir("/home")
 user = '/home/' + user[0]
