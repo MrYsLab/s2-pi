@@ -1,4 +1,0 @@
-site_name: s2-pi
-pages:
-    - Create Your Own Scratch2 Extensions: index.md
-theme: readthedocs
