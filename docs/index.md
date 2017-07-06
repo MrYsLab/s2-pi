@@ -125,7 +125,7 @@ You can optionally have pigpiod started automatically for you by typing:
  
 ```
 sudo systemctl enable pigpiod
-sudo systemctrl start pigpiod
+sudo systemctl start pigpiod
 ```
 
 Now when you boot, the pigpiod should start automatically for you.
@@ -233,7 +233,7 @@ When the connection is complete the indicator will go from yellow to green.
 If you have a device, such as an LED connected to a GPIO pin, you can set its state to a "1" or "0" 
 by using the **_Set BCM Output block_**.
 
-## Changing The State Of A Digital Output Pin Using PWM
+### Changing The State Of A Digital Output Pin Using PWM
 Using the same LED device, you can set its brightness (from 0 to 255) using the **_Set BCM PWM Output_** block.
 
 ###Getting Input From A Digital Input Pin
@@ -749,6 +749,7 @@ ext.digital_read = function (pin) {
 # Go Forth And Code!
 
 We have explored:
+
 * Creating a JavaScript Extension File
 * Creating a Python server derived from the WebSocket class
 * Constructing and sending messages, both in the extension and the server.
