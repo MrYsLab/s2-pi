@@ -105,6 +105,10 @@
         
             <li><a class="toctree-l3" href="#reporter-blocks">Reporter Blocks</a></li>
         
+            <li><a class="toctree-l3" href="#saving-your-project">Saving Your Project</a></li>
+        
+            <li><a class="toctree-l3" href="#reloading-a-saved-project">Reloading A Saved Project</a></li>
+        
         </ul>
     
 
@@ -731,6 +735,37 @@ ext.digital_read = function (pin) {
     };
 </code></pre>
 
+<h2 id="saving-your-project">Saving Your Project</h2>
+<p>After creating your project you can save it by selecting <em>File/Save Project</em> in the Scratch
+editor menu.</p>
+<div style="text-align: center;"><IMG SRC="./images/saving.png" ALT="image"></div>
+
+<p><br></p>
+<p>This will save your file with a .sbx extension.</p>
+<h2 id="reloading-a-saved-project">Reloading A Saved Project</h2>
+<p>There appears to be a bug in Scratch2 Editor for Raspberry Pi in that it won't allow one
+to load the .sbx file it created. When you select File/ Load Project, the .sbx file is not shown
+even though it was saved and exists.</p>
+<h3 id="the-work-around">The Work Around</h3>
+<p>To get around this problem, rename your project's .sbx file to have a .sb2 extension. So 
+for example if you saved your project as <em>my_project.sbx</em>, you will need to rename it to
+<em>my_project.sb2</em>.</p>
+<pre><code>mv myproject.sbx myproject.sb2
+
+</code></pre>
+
+<p>After doing this, if you then select <em>File/Load Project</em>, the .sb2 file be available for
+selection.</p>
+<h3 id="red-blocks">Red Blocks</h3>
+<p>When you load a previously saved project, you will see the extension blocks come up as
+<em>red blocks</em>:</p>
+<div style="text-align: center;"><IMG SRC="./images/red_blocks.png" ALT="image"></div>
+
+<p><br></p>
+<p>To solve this problem, just reload the extensions blocks as described 
+in the <em>Installing The s2-pi JavaScript Extension File Into The Scratch Editor</em> section of 
+this document.</p>
+<p>After doing so, the extension blocks should be restored.</p>
 <h1 id="go-forth-and-code">Go Forth And Code!</h1>
 <p>We have explored:</p>
 <ul>
@@ -782,5 +817,5 @@ and to be able reload that project (at least I know of no way). Hopefully that w
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-08-23 18:14:31
+Build Date UTC : 2017-08-23 19:16:43
 -->
