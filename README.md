@@ -4,7 +4,8 @@
 
 To install type:
 
-Download, unzip and then run setup.py from your home directory
+Download, unzip and then run setup.py from your home directory.
+
 Full details are provided with the [tutoral](https://mryslab.github.io/s2-pi/)
 
 `
