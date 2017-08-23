@@ -5,11 +5,12 @@ from subprocess import call
 call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
 
 user = os.listdir("/home")
-user = '/home/' + user[0]
+user = '/home/' + user[0] + '/'
+print(user)
 
 setup(
     name='s2-pi',
-    version='1.3',
+    version='1.4',
     packages=['s2_pi'],
     # install_requires=['simple-websocket-server'],
     # dependency_links=["pip3 install git+https://github.com/dpallot/simple-websocket-server.git"],
