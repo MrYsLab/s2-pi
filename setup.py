@@ -5,13 +5,13 @@ from subprocess import call
 call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
 
 user = os.listdir("/home")
-pth = '/home/' + user[0] + "/s2_pi.js"
+pth = '/home/' + user[0]
 
-call(["wget", "-o", pth, "https://raw.githubusercontent.com/MrYsLab/s2-pi/master/s2_pi/s2_pi.js"])
+call(["wget", "-P", pth, "https://raw.githubusercontent.com/MrYsLab/s2-pi/master/s2_pi/s2_pi.js"])
 
 setup(
     name='s2-pi',
-    version='1.6',
+    version='1.7',
     packages=['s2_pi'],
 
     entry_points={
