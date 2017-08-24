@@ -5,16 +5,14 @@ from subprocess import call
 call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
 
 user = os.listdir("/home")
-pth  = '/home/' + user[0]
+pth = '/home/' + user[0] + "/s2_pi.js"
+
+call(["wget", "-o", pth, "https://raw.githubusercontent.com/MrYsLab/s2-pi/master/s2_pi/s2_pi.js"])
+
 setup(
     name='s2-pi',
-    version='1.5',
+    version='1.6',
     packages=['s2_pi'],
-    # install_requires=['simple-websocket-server'],
-    # dependency_links=["pip3 install git+https://github.com/dpallot/simple-websocket-server.git"],
-
-
-    data_files=[(pth, ['s2_pi/s2_pi.js'])],
 
     entry_points={
             'console_scripts': ['s2pi = s2_pi.s2_pi:run_server']
