@@ -746,6 +746,50 @@ ext.digital_read = function (pin) {
     };
 ```
 
+## Saving Your Project
+
+After creating your project you can save it by selecting _File/Save Project_ in the Scratch
+editor menu.
+
+<div style="text-align: center;"><IMG SRC="./images/saving.png" ALT="image"></div>
+   <br>
+   
+This will save your file with a .sbx extension.
+
+## Reloading A Saved Project
+There appears to be a bug in Scratch2 Editor for Raspberry Pi in that it won't allow one
+to load the .sbx file it created. When you select File/ Load Project, the .sbx file is not shown
+even though it was saved and exists.
+
+### The Work Around
+To get around this problem, rename your project's .sbx file to have a .sb2 extension. So 
+for example if you saved your project as _my_project.sbx_, you will need to rename it to
+_my_project.sb2_.
+
+```
+mv myproject.sbx myproject.sb2
+
+```
+
+After doing this, if you then select _File/Load Project_, the .sb2 file be available for
+selection.
+
+### Red Blocks
+When you load a previously saved project, you will see the extension blocks come up as
+_red blocks_:
+
+<div style="text-align: center;"><IMG SRC="./images/red_blocks.png" ALT="image"></div>
+   <br>
+
+To solve this problem, just reload the extensions blocks as described 
+in the _Installing The s2-pi JavaScript Extension File Into The Scratch Editor_ section of 
+this document.
+
+After doing so, the extension blocks should be restored.
+
+
+
+
 # Go Forth And Code!
 
 We have explored:
