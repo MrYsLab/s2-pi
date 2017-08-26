@@ -24,6 +24,8 @@ import sys
 import time
 import os
 import pigpio
+import psutil
+from subprocess import call
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 
@@ -77,7 +79,7 @@ class S2Pi(WebSocket):
                 self.pi.wave_tx_stop()
                 self.pi.wave_delete(wid)
         elif client_cmd == 'ready':
-            pass
+            time.sleep(1)
         else:
             print("Unknown command received", client_cmd)
 
@@ -96,8 +98,24 @@ class S2Pi(WebSocket):
     def handleClose(self):
         print(self.address, 'closed')
 
+
 def run_server():
-    print('Did you remember to start pigpiod with: "sudo pigpiod" ???')
+    # checking running processes.
+    # if the backplane is already running, just note that and move on.
+    found_pigpio = False
+
+    for pid in psutil.pids():
+        p = psutil.Process(pid)
+        if p.name() == "pigpiod":
+            found_pigpio = True
+            print("pigpiod is running")
+        else:
+            continue
+
+    if not found_pigpio:
+        call(['sudo', 'pigpiod'])
+        print('pigpiod has been started')
+
     os.system('scratch2&')
     server = SimpleWebSocketServer('', 9000, S2Pi)
     server.serveforever()

@@ -199,6 +199,6 @@
     };
 
     // Register the extension
-    ScratchExtensions.register('s2_pi For ScratchX', descriptor, ext);
+    ScratchExtensions.register('s2_pi', descriptor, ext);
 })({});
 
