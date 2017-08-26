@@ -69,7 +69,13 @@
         
             <li><a class="toctree-l3" href="#installing-s2-pi">Installing s2-pi</a></li>
         
+            <li><a class="toctree-l3" href="#starting-the-s2-pi-server">Starting The s2-pi Server</a></li>
+        
             <li><a class="toctree-l3" href="#installing-the-s2-pi-javascript-extension-file-into-the-scratch-editor">Installing The s2-pi JavaScript Extension File Into The Scratch Editor</a></li>
+        
+            <li><a class="toctree-l3" href="#extension-installation-method-1-using-file-menu">Extension Installation Method 1- Using File Menu</a></li>
+        
+            <li><a class="toctree-l3" href="#extension-installation-method-2-adding-an-extension-to-the-extension-library">Extension Installation Method 2  - Adding An Extension to the Extension Library</a></li>
         
             <li><a class="toctree-l3" href="#removing-a-scratch-extension">Removing A Scratch Extension</a></li>
         
@@ -155,9 +161,10 @@
 <p><center><span style="color:#990033; font-family:Georgia; font-size:3em;">Creating Scratch 2 
 Extensions On Your Raspberry Pi</span></center></p>
 <h1 id="introduction">Introduction</h1>
-<p>The <a href="https://www.raspberrypi.org/downloads/raspbian/">latest Raspbian image</a> (2017-06-21) includes an
-off-line version of the Scratch 2 editor. It is based on Scratchx, a version of Scratch 2 that
-supports Scratch 2 extensions.</p>
+<p>The <a href="https://www.raspberrypi.org/downloads/raspbian/">latest Raspbian image</a> (2017-08-16) includes an
+offline version of the Scratch 2 editor. It is based on Scratchx, a version of Scratch 2 that
+supports Scratch 2 extensions. The previous <em>Jessie</em> version of Raspbian is also compatible
+with s2-pi.</p>
 <p>This tutorial will show you how to create your own custom extensions.</p>
 <h3 id="what-is-a-scratch-extension">What is a Scratch Extension?</h3>
 <p>A Scratch extension allows you to create, display and manage your own custom Scratch 
@@ -166,7 +173,7 @@ of the Scratch editor. </p>
 <p>These blocks,
 similar to the standard set of Scratch blocks, 
 can optionally contain drop down list menus and/or provide a place for users to enter 
-parameters. In addition, the extension contains the code that implement the 
+parameters. In addition, the extension contains the code that implements 
  the block's <em>actions</em>.</p>
 <p><div style="text-align: center;"><IMG SRC="./images/blocks_loaded.png" ALT="image"></div>
    <br></p>
@@ -192,7 +199,7 @@ implementing a server greatly increases the capability and flexibility of the ex
 <p>OK, before heading into the details, let's talk a little bit about what this demo extension 
 actually does.</p>
 <h2 id="the-s2-pi-demo">The s2-pi Demo</h2>
-<p>This demo creates, 6 custom Scratch extension blocks.
+<p>This demo creates 6 custom Scratch extension blocks.
 The function of these blocks can be summarized as follows:</p>
 <ul>
 <li>A block that establishes communication between Scratch and a Python server.</li>
@@ -210,7 +217,7 @@ The function of these blocks can be summarized as follows:</p>
 <p>With your Raspberry Pi connected to the network, type:</p>
 <p><code>sudo pip3 install s2-pi</code></p>
 <p><strong>Option 2</strong></p>
-<p>Alternatively download the code from <a href="https://github.com/MrYsLab/s2-pi">Github</a></p>
+<p>Alternatively, download the code from <a href="https://github.com/MrYsLab/s2-pi">Github</a></p>
 <ol>
 <li>
 <p>Click on the download button on the Github page.
@@ -230,36 +237,50 @@ The function of these blocks can be summarized as follows:</p>
 </li>
 </ol>
 <p><code>sudo python3 setup.py install</code></p>
-<p>Using either of the the installation methods, the installation will:</p>
+<p>Using either of the installation methods, the installation will:</p>
 <ul>
 <li>Copy the extension file, s2_pi.js into your home directory, making it easy to find.</li>
 <li>Place a startup executable, <em>s2pi</em> on the executable path that both starts the server
  and Scratch 2 in one command.</li>
+<li>Place a file name conversion utility, <em>sbx_to_sb2</em>, on the executable path, to convert
+Scratch .sbx files to Scratch .sb2 files.</li>
 </ul>
-<p><strong><em>IMPORTANT NOTE</em></strong>: The server uses the <a href="http://abyz.co.uk/rpi/pigpio/">pigpio</a> library
- for GPIO pin control. This library is included with the Raspbian distribution, but you must
- start its daemon process before running <em>s2pi</em>.</p>
-<p>To start the deamon, type:</p>
-<p><code>sudo pipgipd</code></p>
-<p>You only need to start the pigpio daemon once each time you power up your Raspberry Pi.
-You can optionally have pigpiod started automatically for you by typing:</p>
+<p><strong><em>IMPORTANT NOTE</em></strong>: The <em>s2-pi</em> server uses the <a href="http://abyz.co.uk/rpi/pigpio/">pigpio</a> library
+ for GPIO pin control. This library is included with the Raspbian distribution, and <em>s2pi</em>
+ will start the <em>pigpiod</em> daemon process automatically.</p>
+<p>If you wish to have the <em>pigpiod</em> daemon start automatically at boot time, open a
+terminal window and then type:</p>
 <pre><code>sudo systemctl enable pigpiod
 sudo systemctl start pigpiod
 </code></pre>
 
-<p>Now when you boot, the pigpiod should start automatically for you.</p>
-<p>Now that pigpiod is running, type:</p>
+<p>You need only do this procedure once - after executing these two commands, <em>pigpiod</em> will 
+automatically be started each time you boot your Raspberry Pi.</p>
+<h2 id="starting-the-s2-pi-server">Starting The s2-pi Server</h2>
+<p>Next, to start s2-pi, in a command terminal type:</p>
 <p><code>s2pi</code></p>
-<p>This will start both the server and open up the Scratch editor.</p>
+<p>Notice this command contains 4 characters without a dash character.</p>
+<p>This command starts both the server and opens up the Scratch editor.</p>
 <div style="text-align: center;"><IMG SRC="./images/start.png" ALT="image"></div>
 
 <p><br></p>
 <p>You will see some warnings in the console window generated by Scratch. These can safely be
 ignored.</p>
 <h2 id="installing-the-s2-pi-javascript-extension-file-into-the-scratch-editor">Installing The s2-pi JavaScript Extension File Into The Scratch Editor</h2>
-<p>The extension file must be manually installed for the blocks to appear in the editor. Scratch
-does not provide a way to automatically load the extension when Scratch starts.</p>
-<p>To install, while holding the Shift key on your keyboard, 
+<p>There are 2 possible methods for installing an extension into Scratch. 
+The first method is the
+simpler method. It is most useful when developing a new extension or trying out an 
+extension for the first time.</p>
+<p>Once you have finalized your extension design, you may wish to install your extension 
+into the <em>Scratch
+Extension Library</em>, making it easier for your users to access and use your extension.
+The <em>Method 2</em> discussion will explain how this is accomplished.</p>
+<div style="text-align: center;"><IMG SRC="./images/custom_pi.png" ALT="image"></div>
+
+<p><br></p>
+<p>Select the method that best suits your needs.</p>
+<h2 id="extension-installation-method-1-using-file-menu">Extension Installation Method 1- Using File Menu</h2>
+<p>To install using this method, while holding the Shift key on your keyboard, 
 click on the File menu choice at the top of the Scratch 2 window. 
 Select <strong>Import Experimental Extension</strong> and you will be 
 prompted for a URL to load the file:</p>
@@ -278,6 +299,82 @@ prompted for a URL to load the file:</p>
 it remains silent. <em>Not very friendly</em>.</p>
 <p>When developing your own JavaScript extension file, if there are any syntax errors within the
 file, the blocks will not appear, and once again, Scratch is silent. <em>Even less friendly</em>.</p>
+<h2 id="extension-installation-method-2-adding-an-extension-to-the-extension-library">Extension Installation Method 2  - Adding An Extension to the Extension Library</h2>
+<p>You can also have your extension appear for selection in the <em>More Blocks</em> section by pressing
+the <em>Add an extension</em> button.</p>
+<div style="text-align: center;"><IMG SRC="./images/more_blocks.png" ALT="image"></div>
+
+<p><br></p>
+<div style="text-align: center;"><IMG SRC="./images/custom_pi.png" ALT="image"></div>
+
+<p><br></p>
+<p>To add an extension to the <em>Extension Library</em> we will need to perform the following steps:</p>
+<ol>
+<li>Download a copy of the JavaScript extension file to /usr/lib/scratch2/scratch_extensions.</li>
+<li>Download a modified copy of /usr/lib/scratch2/scratch_extensions/extensions.json
+ so that our extension is added.</li>
+<li>Download an icon for our extension into /usr/lib/scratch2/medialibrarythumbnails.</li>
+</ol>
+<p>We will download these files for the sake of this tutorial. When creating your own
+extension, you would copy the files directly from your workspace.</p>
+<h3 id="downloading-the-javascript-extension-file">Downloading the JavaScript Extension File</h3>
+<p>Open a terminal window and type:</p>
+<pre><code>cd /usr/lib/scratch2/scratch_extensions
+</code></pre>
+
+<p>Then execute the following line in the terminal window:</p>
+<pre><code>sudo curl -o s2_pi.js  https://raw.githubusercontent.com/MrYsLab/s2-pi/master/s2_pi/s2_pi.js
+</code></pre>
+
+<h3 id="download-a-modified-version-of-extensionsjson">Download a Modified Version Of extensions.json</h3>
+<p>To have the extension appear in the Extension Library Page, we need to add a line to
+/usr/lib/scratch2/scratch_extensions/extensions.json describing our extension.</p>
+<p>The line has already been added to the file we will download, but first, let's take a look
+at the format of the entry.</p>
+<pre><code>{ &quot;name&quot;:&quot;Custom Pi GPIO&quot;, &quot;type&quot;:&quot;extension&quot;, &quot;file&quot;:&quot;s2_pi.js&quot;, &quot;md5&quot;:&quot;mry.png&quot;, &quot;url&quot;:&quot;https://mryslab.github.io/s2-pi/&quot;, &quot;tags&quot;:[&quot;hardware&quot;]  },
+</code></pre>
+
+<p>The json entry contains the following fields:</p>
+<ol>
+<li>name - The title that will appear in the Extension Library pagefor our extension.</li>
+<li>type - This needs to be set to "extension".</li>
+<li>file - This is the name of our JavaScript extension file.</li>
+<li>md5  - This is the name of the icon file we wish to have appear in the Extension library 
+ page.</li>
+<li>url  - This is the URL for documentation for the extension.</li>
+<li>tags - The category that our extension is part of. This needs to be set to "hardware"</li>
+</ol>
+<p>We can download a file that already has the additional line added.</p>
+<p>Make sure that the terminal window is still in /usr/lib/scratch2/scratch_extensions,
+then type:</p>
+<pre><code>sudo curl -o extensions.json  https://raw.githubusercontent.com/MrYsLab/s2-pi/master/additional_files/extensions.json
+
+</code></pre>
+
+<h3 id="download-an-icon-file">Download An Icon File</h3>
+<p>To download the MrYsLab logo, first type the following in the terminal window:</p>
+<pre><code>cd /usr/lib/scratch2/medialibrarythumbnails
+</code></pre>
+
+<p>Next type:</p>
+<pre><code>sudo curl -o mry.png  https://raw.githubusercontent.com/MrYsLab/s2-pi/master/docs/images/mry.png
+
+</code></pre>
+
+<h3 id="installing-the-extension-from-the-extension-library">Installing The Extension From The Extension Library</h3>
+<p>After starting s2pi, when the Scratch editor appears, go to the More Blocks section of the
+editor.</p>
+<div style="text-align: center;"><IMG SRC="./images/more_blocks.png" ALT="image"></div>
+
+<p><br></p>
+<p>Click on the Add an Extension button and the Extension Library page will appear.</p>
+<div style="text-align: center;"><IMG SRC="./images/custom_pi.png" ALT="image"></div>
+
+<p><br></p>
+<p>Double click the MisterYsLab icon, and the extension blocks should appear.</p>
+<div style="text-align: center;"><IMG SRC="./images/blocks_loaded.png" ALT="image"></div>
+
+<p><br></p>
 <h2 id="removing-a-scratch-extension">Removing A Scratch Extension</h2>
 <p>When developing an extension, you will probably need to reload it multiple times as you add features
 and get the bugs out. To remove an extension, click on the arrow next to the extension name and select
@@ -322,7 +419,7 @@ by using the <strong><em>Set BCM Output block</em></strong>.</p>
 <p>Using the same LED device, you can set its brightness (from 0 to 255) using the <strong><em>Set BCM PWM Output</em></strong> block.</p>
 <h3 id="getting-input-from-a-digital-input-pin">Getting Input From A Digital Input Pin</h3>
 <p>If you have a device, such as a switch, connected to a GPIO pin, you can read the switch's current 
-state. First you must set the pin as an input using the <strong><em>Set BCM as Input</em></strong> block. This sets up pigpio
+state. First, you must set the pin as an input using the <strong><em>Set BCM as Input</em></strong> block. This sets up pigpio
 to provide notification of a state change on the pin. Now to see the current state, use the Read Digital
 Pin reporter block.</p>
 <h3 id="playing-a-tone">Playing A Tone</h3>
@@ -393,14 +490,14 @@ Also, we will change the title of the extension from "Sample Extension" to "My E
 
 </code></pre>
 
-<p>To change the color of the indicator,  <strong><em>status</em></strong> was set from a value of 2 to 1.
-and  to change the extension name, the line near the bottom of the file was modified.</p>
+<p>To change the color of the indicator,  <strong><em>status</em></strong> was set from a value of 2 to 1,
+and to change the extension name, the line near the bottom of the file was modified.</p>
 <div style="text-align: center;"><IMG SRC="./images/bp3.png" ALT="image"></div>
 
 <p><br></p>
 <h2 id="block-descriptor-section">Block Descriptor Section</h2>
 <p>The specifications for creating different types of blocks, including adding drop down menus 
-and parameter fields within the blocks, is nicely documented on 
+and parameter fields within the blocks is nicely documented on 
 the <a href="https://github.com/LLK/scratchx/wiki#contents">Scratch page</a>, 
 so we won't cover that information in detail here. Let's just take a quick look at the
 blocks descriptors that s2-pi uses.</p>
@@ -430,8 +527,8 @@ blocks descriptors that s2-pi uses.</p>
 Command blocks are created by setting the first fields to " ".  A reporter block is created by setting
 this field to "r". </li>
 <li>The second field is the text that
-appears in the block. Within that text you might include a drop down menu, shown by using %m. The 
-the menu contents are defined within the <em>menu</em> section of the block descriptor. 
+appears in the block. Within that text, you might include a drop down menu, shown by using %m. The 
+menu contents are defined within the <em>menu</em> section of the block descriptor. 
 You can also have the block provide blanks for the
 user to input parameters for the block. %n indicates that this parameter will be a number.</li>
 <li>The third field is the name of the function that will be called when the block executes. 
@@ -443,7 +540,7 @@ descriptor field.</li>
 <p>Once you have your blocks created and are able to successfully load them into Scratch,
 it is time to create the code for the block handlers.</p>
 <h2 id="a-really-simple-example">A Really Simple Example</h2>
-<p>Now lets create a really simple extension file that will do all of the processing within
+<p>Now let's create a really simple extension file that will do all of the processing within
 the JavaScript file (no server is needed). When this extension is loaded, the indicator is set
 to yellow. When the <strong><em>Start The Program</em></strong> block is executed, it will turn the indicator from 
 yellow to green.</p>
@@ -493,19 +590,19 @@ be handled by the <strong><em>goGreen</em></strong> function.</p>
  will turn the indicator to green.</p>
 <p>As you can see, it is possible to perform all of the processing in the JavaScript extension. In fact,
 the default extension provided with Scratch for the Raspberry Pi, "Pi GPIO", does just that. It
-controls the GPIO pins by making some low level GPIO calls.</p>
+controls the GPIO pins by making some low-level GPIO calls.</p>
 <p>However, if you wish to start connecting more complicated devices, such as i2c devices,
 programming may get to be difficult, if not impossible, because of the limitations imposed by
 Scratch on the extension file.</p>
 <p>For example, getting the "Pi GPIO" extension to play a tone would be, to say the least, a challenge.</p>
 <p>To get around the restrictions imposed by the Scratch editor, we can add a server
-for flexibility and else of programming.</p>
+for flexibility and ease of programming.</p>
 <h1 id="providing-a-communication-channel-between-scratch-and-the-server">Providing A Communication Channel Between Scratch And The Server</h1>
 <p>As mentioned before, you can do all processing within the extension if you wish,
 but personally, I prefer to 
 "outsource the rough stuff" to another process. For s2-pi, that process is s2_pi.py.</p>
 <p>The one complication is that we need a way for the Extension and server process to be able to
-communicate with one another, asynchronously and bidirectionally. Whenever a command extension
+communicate with one another, asynchronously and bi-directionally. Whenever a command extension
 block is executed, it needs to be able to send the command, in addition to any parameters that may
 be associated with that command, to the server process.</p>
 <p>And in the other direction, from the server to the extension, the server needs to be able to notify
@@ -514,7 +611,7 @@ the extension whenever a reporting event occurs.</p>
 to poll for incoming messages. This makes the system a lot more efficient and easier to program.
 Not having
 the need for complicated concurrency schemes is a plus. When a message arrives, it essentially
-generates an event that triggers the processing for that message. When no messages are available,
+generates an event that triggers the processing of that message. When no messages are available,
 the program is essentially dormant.</p>
 <h2 id="some-websocket-background">Some WebSocket Background</h2>
 <p>WebSockets satisfy all of our communication needs rather nicely, and since it is already 
@@ -552,7 +649,7 @@ S2PI needs to overwrite and implement 3 methods inherited from the base class:</
 </ul>
 <p>In <a href="https://github.com/MrYsLab/s2-pi/blob/master/s2_pi/s2_pi.py">s2_pi.py</a>, 
 the function near the bottom of the file, <strong><em>run_server</em></strong>, in addition to starting
-up Scratch, instantiates the WebSocket providing the the IP address and port
+up Scratch, instantiates the WebSocket providing the IP address and port
 number we wish to use. We also need to pass a reference to our implementation
 class (S2PI) so that the overwritten methods within S2PI will be called 
 when a WebSocket event occurs.
@@ -575,7 +672,7 @@ The last line of the method assures that the WebSocket server will run "forever"
 </code></pre>
 
 <p>Once <strong>run_server</strong> is called, S2PI is waiting for a connection request. </p>
-<p>Now its the extension's turn to initiate the connection request.
+<p>Now it's the extension's turn to initiate the connection request.
 In order for the server to receive a connection request, the
 <strong><em>Connect to s2_pi server</em></strong> block must be executed within a Scratch script.
 Activating this block calls the <strong><em>cnct</em></strong> function within our JavaScript extension.
@@ -617,10 +714,10 @@ Message:                  { 'command': 'tone', 'pin': pin, 'frequency': frequenc
 </code></pre>
 
 <p>Notice that each of these messages has a <strong><em>command</em></strong> field to identify the type of message.
-When the server receives a message, it simply deferences the command field to determine the action
+When the server receives a message, it simply dereferences the command field to determine the action
 to take. </p>
 <p>On both sides of the interface, we convert the hash/dictionary message structures into strings
-using JSON, so that message can be carried over the network. When the a message is received,
+using JSON, so that message can be carried over the network. When a message is received,
 we need to reconstruct the string back to the native data structure so that we can easily access
 all the fields of the message.</p>
 <p>To convert from a hash to a string on the extension side, the JSON.stringify method is used.</p>
@@ -663,8 +760,8 @@ the <strong><em>Set BCM as an Input</em></strong> block must first be used. </p>
 </code></pre>
 
 <p>We first make sure that a connection was established, and if not an alert is generated in the
-Scratch editor. Next we make sure that the pin specified is valid. The check to do this simply checks
-the pin is in the range of 0-31. Finally we create and send a message with a command of "input" 
+Scratch editor. Next, we make sure that the pin specified is valid. The check to do this simply checks
+the pin is in the range of 0-31. Finally, we create and send a message with a command of "input" 
 supplying
 the pin number that the user entered in the block. </p>
 <p>When the server receives this message, the selected GPIO pin is set to be an input pin.</p>
@@ -746,22 +843,32 @@ editor menu.</p>
 
 <p><br></p>
 <p>This will save your file with a .sbx extension.</p>
-<h2 id="reloading-a-saved-project">Reloading A Saved Project</h2>
-<p>There appears to be a bug in Scratch2 Editor for Raspberry Pi in that it won't allow one
-to load the .sbx file it created. When you select File/ Load Project, the .sbx file is not shown
-even though it was saved and exists.</p>
-<h3 id="the-work-around">The Work Around</h3>
-<p>To get around this problem, rename your project's .sbx file to have a .sb2 extension. So 
-for example if you saved your project as <em>my_project.sbx</em>, you will need to rename it to
-<em>my_project.sb2</em>.</p>
-<pre><code>mv myproject.sbx myproject.sb2
-
+<p>The current version of the Scratch 2 editor contains a bug. If you go to save a project
+when using a custom extension (for some reason this bug does not occur if you use one of
+the two "standard" extensions supplied with the editor), the file is saved with a .sbx
+extension. When you go to load a previously saved project, .sbx files do not appear in the
+project choice menu. To get around this, .sbx projects need to be renamed using a .sb2 
+extension.</p>
+<p>The s2-pi distribution supplies a utility that will rename all .sbx files to .sb2 files for
+a given directory.</p>
+<p>To use this utility, open a terminal window and CD into the directory that contains
+the .sbx project files.</p>
+<p>Next type the following to properly rename the files:</p>
+<pre><code>sbx_to_sb2
 </code></pre>
 
-<p>After doing this, if you then select <em>File/Load Project</em>, the .sb2 file be available for
-selection.</p>
+<p>If you modify a project that was loaded with the .sb2 extension and then save it, the file
+will be renamed with the .sbx extension.</p>
+<p>Hopefully, this rather annoying bug will be fixed in the near future.</p>
+<h2 id="reloading-a-saved-project">Reloading A Saved Project</h2>
+<p>When you select File/ Load Project, only .sb2 files are shown in the file chooser dialog.
+Therefore if you saved a project and did not convert its file type, refer to the previous 
+section <em>Saving Your Project</em>, to learn how to convert the file to the correct type.</p>
+<p>After fixing the file extension type, if you then select <em>File/Load Project</em>, the .sb2 files be available
+ for selection in the file chooser dialog.</p>
 <h3 id="red-blocks">Red Blocks</h3>
-<p>When you load a previously saved project, you will see the extension blocks come up as
+<p>If you installed the extension <a href="./#extension-installation-method-1-using-file-menu">using method 1</a>, then 
+when you load a previously saved project, you will see the extension blocks come up as
 <em>red blocks</em>:</p>
 <div style="text-align: center;"><IMG SRC="./images/red_blocks.png" ALT="image"></div>
 
@@ -780,9 +887,7 @@ this document.</p>
 </ul>
 <p>With that in hand, you should have a good idea of how to code both the JavaScript extension and 
 the associated server side code.</p>
-<p>One last caveat. Currently, there is no way to save a Scratch project containing extension blocks
-and to be able reload that project (at least I know of no way). Hopefully that will be changed in the future.</p>
-<p>If you have any comments, questions of suggestions, please let me know at:</p>
+<p>If you have any comments, questions or suggestions, please let me know at:</p>
 <p><a href="mailto:MisterYsLab@gmail.com]">MisterYsLab@gmail.com</a></p>
               
             </div>
@@ -821,5 +926,5 @@ and to be able reload that project (at least I know of no way). Hopefully that w
 
 <!--
 MkDocs version : 0.16.3
-Build Date UTC : 2017-08-24 15:16:52
+Build Date UTC : 2017-08-26 20:23:53
 -->
