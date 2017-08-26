@@ -3,6 +3,7 @@ import os
 from subprocess import call
 
 call(["pip3", "install", "git+https://github.com/dpallot/simple-websocket-server.git"])
+call(["pip3", "install", "git+https://github.com/giampaolo/psutil.git"])
 
 user = os.listdir("/home")
 pth = '/home/' + user[0]
@@ -11,11 +12,12 @@ call(["wget", "-P", pth, "https://raw.githubusercontent.com/MrYsLab/s2-pi/master
 
 setup(
     name='s2-pi',
-    version='1.7',
+    version='1.8',
     packages=['s2_pi'],
 
     entry_points={
-            'console_scripts': ['s2pi = s2_pi.s2_pi:run_server']
+            'console_scripts': ['s2pi = s2_pi.s2_pi:run_server',
+                                'sbx_to_sb2 = s2_pi.sbx_to_sb2:sbx_to_sb2'],
         },
     url='https://github.com/MrYsLab/s2-pi',
     license='GNU General Public License v3 (GPLv3)',
