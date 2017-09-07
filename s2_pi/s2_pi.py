@@ -79,7 +79,7 @@ class S2Pi(WebSocket):
                 self.pi.wave_tx_stop()
                 self.pi.wave_delete(wid)
         elif client_cmd == 'ready':
-            time.sleep(1)
+            pass
         else:
             print("Unknown command received", client_cmd)
 
