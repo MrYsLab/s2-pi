@@ -25,7 +25,7 @@
     var myStatus = 1; // initially yellow
     var myMsg = 'not_ready';
 
-    ext.cnct = function () {
+    ext.cnct = function (callback) {
         window.socket = new WebSocket("ws://127.0.0.1:9000");
         window.socket.onopen = function () {
             var msg = JSON.stringify({
@@ -39,7 +39,12 @@
             connected = true;
 
             // initialize the reporter buffer
-            digital_inputs.fill('0')
+            digital_inputs.fill('0');
+
+            // give the connection time establish
+            window.setTimeout(function() {
+            callback();
+        }, 1000);
 
         };
 
@@ -50,7 +55,7 @@
             // for changes in digital input state
             var reporter = msg['report'];
             if(reporter === 'digital_input_change') {
-                pin = msg['pin'];
+                var pin = msg['pin'];
                 digital_inputs[parseInt(pin)] = msg['level']
             }
             console.log(message.data)
@@ -164,13 +169,13 @@
 
     // general function to validate the pin value
     function validatePin(pin) {
-        rValue = true;
+        var rValue = true;
         if (pin === 'PIN') {
             alert("Insert a valid BCM pin number.");
             rValue = false;
         }
         else {
-            pinInt = parseInt(pin);
+            var pinInt = parseInt(pin);
             if (pinInt < 0 || pinInt > 31) {
                 alert("BCM pin number must be in the range of 0-31.");
                 rValue = false;
@@ -183,7 +188,7 @@
     var descriptor = {
         blocks: [
             // Block type, block name, function name
-            [" ", 'Connect to s2_pi server.', 'cnct'],
+            ["w", 'Connect to s2_pi server.', 'cnct'],
             [" ", 'Set BCM %n as an Input', 'input','PIN'],
             [" ", "Set BCM %n Output to %m.high_low", "digital_write", "PIN", "0"],
             [" ", "Set BCM PWM Out %n to %n", "analog_write", "PIN", "VAL"],
