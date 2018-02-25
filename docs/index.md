@@ -1,10 +1,11 @@
 <img align="left" src="./images/smiling-cat-face-with-open-mouth.png">
 
-<center><span style="color:#990033; font-family:Georgia; font-size:4em;">s2-pi</span></center>
+<center><span style="color:#990033; font-family:Georgia; font-size:3em;">s2-pi</span></center>
 
-<center><span style="color:#990033; font-family:Georgia; font-size:3em;">Creating Scratch 2 
-Extensions On Your Raspberry Pi</span></center>
+<center><span style="color:#990033; font-family:Georgia; font-size:2em;">Creating<br>Scratch 2 
+Extensions<br>On Your Raspberry Pi</span></center>
 
+<br><br>
 # Introduction
 
 The [latest Raspbian image](https://www.raspberrypi.org/downloads/raspbian/) (2017-08-16) includes an
