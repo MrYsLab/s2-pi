@@ -63,33 +63,33 @@ class S2Pi(WebSocket):
             self.pi.set_PWM_dutycycle(pin, value)
 
         elif client_cmd == 'servo':
-            """	
-            HackEduca ---> when a user wishes to set a servo level for a digital input pin
-            Using SG90 servo:
-            180° = 2500 Pulses; 0° = 690 Pulses
-            map = (PulseHigh - PulseLow) / (180° - 0)
-            y - PulseLow = map(x - 0)
-            Where:
-            y = Wanted Pulse to be applied in the formula
-            X = Desired angle
-
-            Test the following python code to know your Pulse Range: Replace it in the formula 
-            >>>>----------------------->
-            import RPi.GPIO as GPIO
-            import pigpio
-            #Pulse = 690 # 0°
-            Pulse = 2500 # 180°
-            pi = pigpio.pi()
-            pi.set_mode(23, pigpio.OUTPUT)
-            pi.set_servo_pulsewidth(23, Pulse)             
-            pi.stop()		
-            <------------------------<<<<<
-            """
+            # HackEduca ---> When a user wishes to set a servo:
+            # Using SG90 servo:
+            # 180° = 2500 Pulses; 0° = 690 Pulses
+            # Want Servo 0°-->180° instead of 180°-->0°:
+            # Invert pulse_max to pulse_min
+            # pulse_width = int((((pulse_max - pulse_min)/(degree_max - degree_min)) * value) + pulse_min)
+            # Where:
+            # Test the following python code to know your Pulse Range: Replace it in the formula
+            # >>>>----------------------->
+            # import RPi.GPIO as GPIO
+            # import pigpio
+            # Pulse = 690 # 0°
+            # Pulse = 2500 # 180°
+            # pi = pigpio.pi()
+            # pi.set_mode(23, pigpio.OUTPUT)
+            # pi.set_servo_pulse_width(23, Pulse)
+            # pi.stop()
+            # <------------------------<<<<<
             pin = int(payload['pin'])
             self.pi.set_mode(pin, pigpio.OUTPUT)
             value = int(payload['value'])
-            angle = int(((181 / 18) * value) + 690)  # map Pulse to Angle
-            self.pi.set_servo_pulsewidth(pin, angle)
+            degree_min = 0
+            degree_max = 180
+            pulse_min = 2500
+            pulse_max = 690
+            pulse_width = int((((pulse_max - pulse_min) / (degree_max - degree_min)) * value) + pulse_min)
+            self.pi.set_servo_pulse_width(pin, pulse_width)
             time.sleep(0.01)
 
         # when a user wishes to output a tone
