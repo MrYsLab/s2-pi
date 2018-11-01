@@ -140,7 +140,34 @@
             }
         }
     };
-
+    // ***Hackeduca --> when the Servo block is executed
+    ext.servo = function (pin, value) {
+        if (connected == false) {
+            alert("Server Not Connected");
+        }
+        console.log("servo");
+        // validate the pin number for the mode
+        if (validatePin(pin)) {
+            // validate value to be between 0 and 180
+            if (value === 'VAL') {
+                alert("Servo Value must be in the range of 0 - 180");
+            }
+            else {
+                value = parseInt(value);
+                if (value < 0 || value > 180) {
+                    alert("Servo Value must be in the range of 0 - 180");
+                }
+                else {
+                    var msg = JSON.stringify({
+                        "command": 'servo', 'pin': pin, 'value': value
+                    });
+                    console.log(msg);
+                    window.socket.send(msg);
+                }
+            }
+        }
+    };
+	
     // when the play tone block is executed
     ext.play_tone = function (pin, frequency) {
         if (connected == false) {
@@ -192,6 +219,7 @@
             [" ", 'Set BCM %n as an Input', 'input','PIN'],
             [" ", "Set BCM %n Output to %m.high_low", "digital_write", "PIN", "0"],
             [" ", "Set BCM PWM Out %n to %n", "analog_write", "PIN", "VAL"],
+			[" ", "Set BCM %n as Servo with angle = %n (0 - 180)", "servo", "PIN", "VAL"],     // ***Hackeduca --> Block for Servo 			
             [" ", "Tone: BCM %n HZ: %n", "play_tone", "PIN", 1000],
             ["r", "Read Digital Pin %n", "digital_read", "PIN"]
 
@@ -206,4 +234,3 @@
     // Register the extension
     ScratchExtensions.register('s2_pi', descriptor, ext);
 })({});
-
