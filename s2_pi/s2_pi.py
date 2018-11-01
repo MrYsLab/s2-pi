@@ -62,23 +62,23 @@ class S2Pi(WebSocket):
             self.pi.set_PWM_dutycycle(pin, value)
 
         #HackEduca ---> When a user wishes to set a servo:
-	#Using SG90 servo:
-	#180° = 2500 Pulses; 0° = 690 Pulses
-	#Want Servo 0°-->180° instead of 180°-->0°:
+        #Using SG90 servo:
+        #180° = 2500 Pulses; 0° = 690 Pulses
+        #Want Servo 0°-->180° instead of 180°-->0°:
         #Invert PulseMax to PulseMin
         #Pulsewidth = int((((PulseMax - PulseMin)/(DegreeMax - DegreeMin)) * value) + PulseMin)
         #Where:
-	#Test the following python code to know your Pulse Range: Replace it in the formula 
-	#>>>>----------------------->
+        #Test the following python code to know your Pulse Range: Replace it in the formula 
+        #>>>>----------------------->
         #import RPi.GPIO as GPIO
         #import pigpio
-        ##Pulse = 690 # 0°
+        #Pulse = 690 # 0°
         #Pulse = 2500 # 180°
         #pi = pigpio.pi()
         #pi.set_mode(23, pigpio.OUTPUT)
         #pi.set_servo_pulsewidth(23, Pulse)             
         #pi.stop()		
-	#<------------------------<<<<<
+        #<------------------------<<<<<
 
         elif client_cmd == 'servo':
             pin = int(payload['pin'])
