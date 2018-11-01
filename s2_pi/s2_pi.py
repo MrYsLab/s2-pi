@@ -3,7 +3,7 @@
 """
 s2_pi.py
 
- Copyright (c) 2016, 2017 Alan Yorinks All right reserved.
+ Copyright (c) 2016-2018 Alan Yorinks All right reserved.
 
  Python Banyan is free software; you can redistribute it and/or
  modify it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE
@@ -20,12 +20,13 @@ s2_pi.py
 
 """
 import json
+import os
 import sys
 import time
-import os
+from subprocess import call
+
 import pigpio
 import psutil
-from subprocess import call
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 
@@ -33,7 +34,7 @@ from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 # It receives messages from the Scratch and reports back for any digital input
 # changes.
 class S2Pi(WebSocket):
-   
+
     def handleMessage(self):
         # get command from Scratch2
         payload = json.loads(self.data)
@@ -61,37 +62,36 @@ class S2Pi(WebSocket):
             value = int(payload['value'])
             self.pi.set_PWM_dutycycle(pin, value)
 
-        #HackEduca ---> When a user wishes to set a servo:
-        #Using SG90 servo:
-        #180° = 2500 Pulses; 0° = 690 Pulses
-        #Want Servo 0°-->180° instead of 180°-->0°:
-        #Invert PulseMax to PulseMin
-        #Pulsewidth = int((((PulseMax - PulseMin)/(DegreeMax - DegreeMin)) * value) + PulseMin)
-        #Where:
-        #Test the following python code to know your Pulse Range: Replace it in the formula 
-        #>>>>----------------------->
-        #import RPi.GPIO as GPIO
-        #import pigpio
-        #Pulse = 690 # 0°
-        #Pulse = 2500 # 180°
-        #pi = pigpio.pi()
-        #pi.set_mode(23, pigpio.OUTPUT)
-        #pi.set_servo_pulsewidth(23, Pulse)             
-        #pi.stop()		
-        #<------------------------<<<<<
-
         elif client_cmd == 'servo':
+            """	
+            HackEduca ---> when a user wishes to set a servo level for a digital input pin
+            Using SG90 servo:
+            180° = 2500 Pulses; 0° = 690 Pulses
+            map = (PulseHigh - PulseLow) / (180° - 0)
+            y - PulseLow = map(x - 0)
+            Where:
+            y = Wanted Pulse to be applied in the formula
+            X = Desired angle
+
+            Test the following python code to know your Pulse Range: Replace it in the formula 
+            >>>>----------------------->
+            import RPi.GPIO as GPIO
+            import pigpio
+            #Pulse = 690 # 0°
+            Pulse = 2500 # 180°
+            pi = pigpio.pi()
+            pi.set_mode(23, pigpio.OUTPUT)
+            pi.set_servo_pulsewidth(23, Pulse)             
+            pi.stop()		
+            <------------------------<<<<<
+            """
             pin = int(payload['pin'])
             self.pi.set_mode(pin, pigpio.OUTPUT)
             value = int(payload['value'])
-            DegreeMin = 0
-            DegreeMax = 180
-            PulseMin = 2500
-            PulseMax = 690
-            Pulsewidth = int((((PulseMax - PulseMin)/(DegreeMax - DegreeMin)) * value) + PulseMin)
-            self.pi.set_servo_pulsewidth(pin, Pulsewidth)
+            angle = int(((181 / 18) * value) + 690)  # map Pulse to Angle
+            self.pi.set_servo_pulsewidth(pin, angle)
             time.sleep(0.01)
-			
+
         # when a user wishes to output a tone
         elif client_cmd == 'tone':
             pin = int(payload['pin'])
@@ -158,5 +158,3 @@ if __name__ == "__main__":
         run_server()
     except KeyboardInterrupt:
         sys.exit(0)
-
-
