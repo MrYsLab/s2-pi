@@ -84,12 +84,12 @@ class S2Pi(WebSocket):
             pin = int(payload['pin'])
             self.pi.set_mode(pin, pigpio.OUTPUT)
             value = int(payload['value'])
-            degree_min = 0
-            degree_max = 180
-            pulse_min = 2500
-            pulse_max = 690
-            pulse_width = int((((pulse_max - pulse_min) / (degree_max - degree_min)) * value) + pulse_min)
-            self.pi.set_servo_pulse_width(pin, pulse_width)
+            DegreeMin = 0
+            DegreeMax = 180
+            PulseMin = 2500
+            PulseMax = 690
+            Pulsewidth = int((((PulseMax - PulseMin) / (DegreeMax - DegreeMin)) * value) + PulseMin)
+            self.pi.set_servo_pulsewidth(pin, Pulsewidth)
             time.sleep(0.01)
 
         # when a user wishes to output a tone
