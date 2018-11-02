@@ -8,7 +8,8 @@ Extensions<br>On Your Raspberry Pi</span></center>
 <br><br>
 # Introduction
 
-The [latest Raspbian image](https://www.raspberrypi.org/downloads/raspbian/) (2018-10-09) includes an
+The [latest Raspbian image](https://www.raspberrypi.org/downloads/raspbian/) (2018-10-09) as of this writing,
+ includes an
 offline version of the Scratch 2 editor. It is based on Scratchx, a version of Scratch 2 that
 supports Scratch 2 extensions. The previous *Jessie* version of Raspbian is also compatible
 with s2-pi.
@@ -77,6 +78,17 @@ The function of these blocks can be summarized as follows:
 
 ## Installing s2-pi
 
+The preferred installation method is to use the *pip tool*. To install using *pip* open a
+terminal window and type:
+
+```
+sudo pip3 install s2-pi
+
+```
+
+You can also install s2-pi by downloading the code from Github.
+
+Here is how to use this alternative method:
 
 Download the code from [Github](https://github.com/MrYsLab/s2-pi)
 
@@ -465,7 +477,7 @@ blocks descriptors that s2-pi uses.
             [" ", 'Set BCM %n as an Input', 'input','PIN'],
             [" ", "Set BCM %n Output to %m.high_low", "digital_write", "PIN", "0"],
             [" ", "Set BCM PWM Out %n to %n", "analog_write", "PIN", "VAL"],
-			[" ", "Set BCM %n as Servo with angle = %n (0 - 180)", "servo", "PIN", "VAL"],     // ***Hackeduca --> Block for Servo
+			[" ", "Set BCM %n as Servo with angle = %n (0° - 180°)", "servo", "PIN", "0"],     // ***Hackeduca --> Block for Servo
             [" ", "Tone: BCM %n HZ: %n", "play_tone", "PIN", 1000],
             ["r", "Read Digital Pin %n", "digital_read", "PIN"]
 
